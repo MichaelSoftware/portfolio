@@ -4,30 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title></title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
+    <title>Michael Wojcik | Portfolio</title>
+    <meta name="description" content="Portfolio of Michael Wojcik, Mobile Computing Student and Developer." />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/magic-grid/dist/magic-grid.min.js"></script>
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="index.css" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+      a { color: #90caf9; text-decoration: none; }
+      #profile_img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-size: cover;
+        margin: 20px auto;
+      }
+      #display h1 {
+        border-bottom: 2px solid #90caf9;
+        padding-bottom: 5px;
+      }
+      section {
+        background: #1e1e1e;
+        border-radius: 8px;
+        margin: 15px;
+        padding: 15px;
+        transition: transform 0.3s;
+      }
+      section:hover {
+        transform: translateY(-5px);
+        background: #2c2c2c;
+      }
+      #footer {
+        margin-top: 50px;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.9em;
+        color: #777;
+      }
+      #resume {
+        margin-top: 10px;
+      }
+    </style>
+
   </head>
 
   <body>
     <div id="loading">
       <div id="spinner"></div>
     </div>
+
     <div id="profile">
       <div id="profile_img"></div>
       <div id="username">
@@ -36,58 +76,59 @@
       <div id="userbio"></div>
       <div id="about"></div>
     </div>
+
     <div id="display">
       <div id="work">
         <h1>Work.</h1>
         <div class="projects" id="work_section"></div>
       </div>
+
       <div id="forks" style="display:none;">
         <h1>Forks.</h1>
         <div class="projects" id="forks_section"></div>
       </div>
+
       <div id="blog_section">
         <h1>Blog.</h1>
         <div id="blogs"></div>
       </div>
+
       <div id="footer">
-        <a href="https://github.com/imfunniee" target="_blank"
-          >made on earth by a human</a
-        >
+        <div>© 2025 Michael Wojcik</div>
+        <div id="resume">
+          <a href="resume.pdf" target="_blank">View My Resume</a>
+        </div>
       </div>
     </div>
+
     <script type="text/javascript">
       setTimeout(function() {
-        document.getElementById("loading").classList.add("animated");
-        document.getElementById("loading").classList.add("fadeOut");
+        document.getElementById("loading").classList.add("animated", "fadeOut");
         setTimeout(function() {
-          document.getElementById("loading").classList.remove("animated");
-          document.getElementById("loading").classList.remove("fadeOut");
           document.getElementById("loading").style.display = "none";
         }, 800);
       }, 1500);
+
       $.getJSON("blog.json", function(blog) {
-        blog = blog || [];
-        if (blog.length == 0) {
-          return (document.getElementById("blog_section").style.display =
-            "none");
+        if (!blog || blog.length === 0) {
+          document.getElementById("blog_section").style.display = "none";
+          return;
         }
         for (var i = 0; i < blog.length; i++) {
           $("#blogs").append(`
             <a href="./blog/${blog[i].url_title}/" target="_blank">
-                <section>
-                    <img src="./blog/${blog[i].url_title}/${blog[i].top_image}">
-                    <div class="blog_container">
-                        <div class="section_title">${blog[i].title}</div>
-                        <div class="about_section">
-                            ${blog[i].sub_title}
-                        </div>
-                    </div>
-                </section>
+              <section>
+                <img src="./blog/${blog[i].url_title}/${blog[i].top_image}" alt="Blog Cover">
+                <div class="blog_container">
+                  <div class="section_title">${blog[i].title}</div>
+                  <div class="about_section">${blog[i].sub_title}</div>
+                </div>
+              </section>
             </a>
-            `);
+          `);
         }
       }).fail(function() {
-        return (document.getElementById("blog_section").style.display = "none");
+        document.getElementById("blog_section").style.display = "none";
       });
     </script>
 
@@ -95,7 +136,7 @@
       const magicProjectsGrid = new MagicGrid({
         container: "#work_section",
         animate: false,
-        gutter: 30, // default gutter size
+        gutter: 30,
         static: true,
         useMin: false,
         maxColumns: 2,
@@ -105,14 +146,14 @@
       const magicForksGrid = new MagicGrid({
         container: "#forks_section",
         animate: false,
-        gutter: 30, // default gutter size
+        gutter: 30,
         static: true,
         useMin: false,
         maxColumns: 2,
         useTransform: true
       });
 
-      $("document").ready(() => {
+      $(document).ready(() => {
         magicProjectsGrid.listen();
         magicForksGrid.listen();
       });
